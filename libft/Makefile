@@ -31,7 +31,6 @@ PRINTF_DIR	=	$(OS_SRCS_DIR)/ft_printf
 
 
 
-
 ######################### Sources #########################
 PRINTF_SRCS	=	$(PRINTF_DIR)/ft_dprintf.c \
 				$(PRINTF_DIR)/ft_fputc.c \
@@ -139,13 +138,13 @@ LIGHT_BLUE	=	\033[94m
 YELLOW		=	\033[93m
 
 ### Progress Bar
+COMPILED	:=	0
 TOTAL_FILES	:=	$(words $(OBJS))
-CURRENT_FILE :=	0
 
 define progress
-	@$(eval COMPILED=$(shell echo $$(expr $(COMPILED) + 1)))
-	@CURRENT_PERCENT=$$(expr $(COMPILED) \* 100 / $(TOTAL_FILES)); \
-	printf "\r\033[K$(YELLOW)[%3d%%] Compiling: $<$(RESET)\r" $$CURRENT_PERCENT
+	@$(eval COMPILED := $(shell echo $$(($(COMPILED) + 1))))
+	@CURRENT_PERCENT=$$(($(COMPILED) * 100 / $(TOTAL_FILES))); \
+	printf "\033[K$(YELLOW)[%3d%%] Compiling: $<$(RESET)\r" $$CURRENT_PERCENT
 endef
 
 
@@ -155,7 +154,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(AR) $(NAME) $(OBJS)
-	@echo "\033[K$(BOLD)$(LIGHT_BLUE)$(NAME) created successfully!$(RESET)"
+	@printf "\r\033[K$(BOLD)$(LIGHT_BLUE)$(NAME) created successfully!$(RESET)\n"
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)
