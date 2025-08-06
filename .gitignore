@@ -53,3 +53,10 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# mac OS
+.DS_store
+
+# minishell
+*.Identifer
+.Identifer
