@@ -1,8 +1,9 @@
-#include "variables.h"
-#include "dispose_var.h"
-#include <stdlib.h>
+#include "var.h"
 
-void	dispose_var(t_shell_var *var)
+void	dispose_var(t_var *var);
+void	dispose_varlist(t_var *var);
+
+void	dispose_var(t_var *var)
 {
 	if (var)
 	{
@@ -14,22 +15,14 @@ void	dispose_var(t_shell_var *var)
 	}
 }
 
-void	dispose_varlist(t_varlist *varlist)
+void	dispose_varlist(t_var *var)
 {
-	t_shell_var	**temp;
+	t_var	*temp;
 
-	if (varlist)
+	while (var)
 	{
-		if (varlist->list)
-		{
-			temp = varlist->list;
-			while (*temp)
-			{
-				dispose_var(*temp);
-				temp++;
-			}
-			free(varlist->list);
-		}
-		free(varlist);
+		temp = var;
+		var = var->next;
+		dispose_var(temp);
 	}
 }

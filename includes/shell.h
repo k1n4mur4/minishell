@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 00:06:03 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/06 03:39:36 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/06 10:37:49 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define SHELL_H
 
 #include "config.h"
-
-#include "config.h"
 #include "variables.h"
 #include "exit_shell.h"
+
+#include "test.h"
 
 #include "libft.h"
 

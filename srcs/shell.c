@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 01:49:39 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/06 03:51:56 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/07 00:20:43 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char **argv, char **env)
 		return (127);
 	}
 	initialize_shell_variables(env);
+	run_all_tests();
 	// shell_initialize();
 	// if (isatty(STDIN_FILENO))
 	// 	reader_loop();
