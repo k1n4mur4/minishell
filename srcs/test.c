@@ -320,6 +320,32 @@ void	test_env_integration(void)
 
 void	run_all_tests(void)
 {
+	char	*input;
+	
+	printf("Environment Variable Test Program\n");
+	printf("Type 'help' for available commands.\n\n");
+	
+	while (1)
+	{
+		input = readline("test> ");
+		
+		if (!input)
+		{
+			printf("\nExiting test program...\n");
+			break;
+		}
+		
+		if (strlen(input) > 0)
+			add_history(input);
+		
+		execute_command(input);
+		
+		free(input);
+	}
+}
+
+void	run_individual_tests(void)
+{
 	printf("\n========== ENVIRONMENT VARIABLE TESTS ==========\n\n");
 	
 	test_initialize_variables();
@@ -334,8 +360,173 @@ void	run_all_tests(void)
 	printf("\n========== ALL TESTS PASSED ==========\n\n");
 }
 
-// int	main(void)
-// {
-// 	run_all_tests();
-// 	return (0);
-// }
+void	cmd_env(void)
+{
+	t_var	*var;
+	
+	var = ft_var(NULL, GET);
+	if (!var)
+	{
+		printf("No environment variables set.\n");
+		return;
+	}
+	
+	while (var)
+	{
+		if (var->value)
+			printf("%s=%s\n", var->name, var->value);
+		else
+			printf("%s\n", var->name);
+		var = var->next;
+	}
+}
+
+void	cmd_export(char *args)
+{
+	char	*equal_sign;
+	char	*name;
+	char	*value;
+	t_var	*new_var;
+	
+	if (!args || strlen(args) == 0)
+	{
+		cmd_env();
+		return;
+	}
+	
+	equal_sign = strchr(args, '=');
+	if (equal_sign)
+	{
+		*equal_sign = '\0';
+		name = args;
+		value = equal_sign + 1;
+		new_var = make_var(name, value);
+		make_varlist(new_var);
+		printf("Exported: %s=%s\n", name, value);
+	}
+	else
+	{
+		new_var = make_bare_var(args);
+		make_varlist(new_var);
+		printf("Exported: %s\n", args);
+	}
+}
+
+void	cmd_unset(char *args)
+{
+	if (!args || strlen(args) == 0)
+	{
+		printf("Usage: unset VAR\n");
+		return;
+	}
+	
+	unset_variable(args);
+	printf("Unset: %s\n", args);
+}
+
+void	cmd_echo(char *args)
+{
+	t_var	*var;
+	
+	if (!args || strlen(args) == 0)
+	{
+		printf("\n");
+		return;
+	}
+	
+	if (args[0] == '$')
+	{
+		var = find_variable(args + 1);
+		if (var && var->value)
+			printf("%s\n", var->value);
+		else
+			printf("\n");
+	}
+	else
+	{
+		printf("%s\n", args);
+	}
+}
+
+void	print_help(void)
+{
+	printf("\n========== TEST COMMAND HELP ==========\n");
+	printf("Available commands:\n");
+	printf("  help                     - Show this help message\n");
+	printf("  all                      - Run all tests\n");
+	printf("  env                      - Display all environment variables\n");
+	printf("  export VAR=value         - Set environment variable\n");
+	printf("  export VAR               - Mark variable for export\n");
+	printf("  unset VAR                - Remove environment variable\n");
+	printf("  echo $VAR                - Display variable value\n");
+	printf("  init                     - Test initialize_variables\n");
+	printf("  create                   - Test create_var\n");
+	printf("  find                     - Test find_variable\n");
+	printf("  varlist                  - Test make_varlist\n");
+	printf("  test-unset               - Test unset_variable\n");
+	printf("  ftvar                    - Test ft_var\n");
+	printf("  memory                   - Test memory_management\n");
+	printf("  test-env                 - Test env_integration\n");
+	printf("  exit                     - Exit test program\n");
+	printf("=======================================\n\n");
+}
+
+void	execute_command(char *command)
+{
+	char	*space;
+	char	*args;
+	
+	if (!command)
+		return;
+	
+	space = strchr(command, ' ');
+	if (space)
+	{
+		*space = '\0';
+		args = space + 1;
+		while (*args == ' ')
+			args++;
+	}
+	else
+	{
+		args = NULL;
+	}
+	
+	if (strcmp(command, "help") == 0)
+		print_help();
+	else if (strcmp(command, "env") == 0)
+		cmd_env();
+	else if (strcmp(command, "export") == 0)
+		cmd_export(args);
+	else if (strcmp(command, "unset") == 0)
+		cmd_unset(args);
+	else if (strcmp(command, "echo") == 0)
+		cmd_echo(args);
+	else if (strcmp(command, "all") == 0)
+		run_individual_tests();
+	else if (strcmp(command, "init") == 0)
+		test_initialize_variables();
+	else if (strcmp(command, "create") == 0)
+		test_create_var();
+	else if (strcmp(command, "find") == 0)
+		test_find_variable();
+	else if (strcmp(command, "varlist") == 0)
+		test_make_varlist();
+	else if (strcmp(command, "test-unset") == 0)
+		test_unset_variable();
+	else if (strcmp(command, "ftvar") == 0)
+		test_ft_var();
+	else if (strcmp(command, "memory") == 0)
+		test_memory_management();
+	else if (strcmp(command, "test-env") == 0)
+		test_env_integration();
+	else if (strcmp(command, "exit") == 0)
+	{
+		printf("Exiting test program...\n");
+		ft_var(NULL, FREE);
+		exit(0);
+	}
+	else if (strlen(command) > 0)
+		printf("Unknown command: '%s'. Type 'help' for available commands.\n", command);
+}
+

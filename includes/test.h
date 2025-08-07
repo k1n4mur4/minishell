@@ -36,5 +36,12 @@ void	test_ft_var(void);
 void	test_memory_management(void);
 void	test_env_integration(void);
 void	run_all_tests(void);
+void	run_individual_tests(void);
+void	print_help(void);
+void	execute_command(char *command);
+void	cmd_env(void);
+void	cmd_export(char *args);
+void	cmd_unset(char *args);
+void	cmd_echo(char *args);
 
 #endif

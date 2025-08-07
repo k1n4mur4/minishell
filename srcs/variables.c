@@ -34,7 +34,6 @@ t_var	*make_varlist(t_var	*var)
 	{
 		free(temp->value);
 		temp->value = ft_strdup(var->value);
-		dispose_var(var);
 	}
 	else
 	{
