@@ -1,201 +1,139 @@
 #include "variables.h"
 
-void	create_variable_tables(void)
+t_var	*find_variable(char	*name);
+t_var	*make_varlist(t_var	*var);
+void	unset_variable(char *name);
+t_var	*create_var(char *str);
+void	initialize_shell_variables(char **env);
+
+t_var	*find_variable(char	*name)
 {
-	t_varlist	*vlist;
+	t_var	*temp;
 
-	vlist = (t_varlist *)ft_calloc(sizeof(*vlist), 1);
-	vlist->list = NULL;
-	vlist->list_size = 0;
-	vlist->list_len = 0;
-	varlist(vlist, SET);
-}
-
-t_shell_var	*find_variable(char	*name)
-{
-	t_varlist	*list;
-	size_t		i;
-
-	list = varlist(NULL, GET);
-	if (!list || !list->list || !name)
+	temp = ft_var(NULL, GET);
+	if (!temp || !name)
 		return (NULL);
-	i = 0;
-	while (i < list->list_len)
+	while (temp)
 	{
-		if (list->list[i] && list->list[i]->name &&
-			ft_strcmp(list->list[i]->name, name) == 0)
-			return (list->list[i]);
-		i++;
+		if (temp->name && ft_strcmp(temp->name, name) == 0)
+			return (temp);
+		temp = temp->next;
 	}
 	return (NULL);
 }
 
-t_shell_var	*create_shell_var(char *str)
+t_var	*make_varlist(t_var	*var)
 {
-	t_shell_var	*var;
-	char		*equal;
+	t_var	*temp;
+	t_var	*varlist;
 
-	var = (t_shell_var *)ft_calloc(sizeof(*var), 1);
-	if (!var)
+	if (!var || !var->name)
 		return (NULL);
-	equal = ft_strchr(str, '=');
-	if (equal)
+	temp = find_variable(var->name);
+	if (temp)
 	{
-		var->name = ft_strndup(str, equal - str);
-		var->value = ft_strdup(equal + 1);
+		free(temp->value);
+		temp->value = ft_strdup(var->value);
 	}
 	else
 	{
-		var->name = ft_strdup(str);
-		var->value = ft_strdup("");
+		temp = ft_var(NULL, GET);
+		if (!temp)
+		{
+			temp = ft_var(var, SET);
+			return (temp);
+		}
+		while (temp->next)
+			temp = temp->next;
+		temp->next = var;
 	}
-	if (!var->name || !var->value)
+	varlist = ft_var(NULL, GET);
+	return (varlist);
+}
+
+void	unset_variable(char *name)
+{
+	t_var	*var;
+	t_var	*temp;
+	t_var	*prev;
+
+	var = ft_var(NULL, GET);
+	if (!var || !name)
+		return ;
+	temp = var;
+	prev = NULL;
+	while (temp)
 	{
-		dispose_var(var);
-		return (NULL);
+		if (temp->name && ft_strcmp(temp->name, name) == 0)
+			break;
+		prev = temp;
+		temp = temp->next;
 	}
+	if (temp && temp->name && ft_strcmp(temp->name, name) == 0)
+	{
+		if (prev == NULL)
+			ft_var(temp->next, SET);
+		else
+			prev->next = temp->next;
+		dispose_var(temp);
+	}
+}
+
+t_var	*create_var(char *str)
+{
+	t_var	*var;
+	char	*name;
+	char	*value;
+	char	*equal;
+
+	equal = ft_strchr(str, '=');
+	if (equal)
+	{
+		name = ft_strndup(str, equal - str);
+		value = ft_strdup(equal + 1);
+	}
+	else
+	{
+		name = ft_strdup(str);
+		value = NULL;
+	}
+	var = make_var(name, value);
+	if (name)
+		free(name);
+	if (value)
+		free(value);
 	return (var);
 }
 
-void	add_variable(t_shell_var *var)
+static void	set_var(char **env)
 {
-	t_varlist	*list;
-	t_shell_var	**new_list;
-	size_t		new_size;
-
-	list = varlist(NULL, GET);
-	if (!list || !var)
-		return ;
-	if (list->list_len >= list->list_size)
-	{
-		if (list->list_size == 0)
-			new_size = 16;
-		else
-			new_size = list->list_size * 2;
-		new_list = (t_shell_var **)ft_calloc(sizeof(t_shell_var *), new_size);
-		if (!new_list)
-			return ;
-		if (list->list)
-		{
-			ft_memcpy(new_list, list->list, sizeof(t_shell_var *) * list->list_len);
-			free(list->list);
-		}
-		list->list = new_list;
-		list->list_size = new_size;
-	}
-	list->list[list->list_len] = var;
-	list->list_len++;
-	if (list->list_len < list->list_size)
-		list->list[list->list_len] = NULL;
-}
-
-void	set_shell_var(char **env)
-{
-	t_shell_var	*var;
-	int			i;
+	t_var	*var;
+	int		i;
 
 	i = 0;
 	while (env[i])
 	{
-		var = create_shell_var(env[i]);
+		var = create_var(env[i]);
 		if (var)
-			add_variable(var);
+			make_varlist(var);
 		i++;
 	}
 }
 
-void	add_varlist(t_varlist *varlist, t_varlist *temp)
+void	print_var(t_var *var)
 {
-	size_t		i;
-	t_shell_var	*new_var;
-
-	if (!varlist || !temp || !temp->list)
-		return ;
-	i = 0;
-	while (i < temp->list_len)
-	{
-		if (temp->list[i])
-		{
-			new_var = create_shell_var("");
-			if (new_var)
-			{
-				free(new_var->name);
-				free(new_var->value);
-				new_var->name = ft_strdup(temp->list[i]->name);
-				new_var->value = ft_strdup(temp->list[i]->value);
-				if (new_var->name && new_var->value)
-					add_variable(new_var);
-				else
-					dispose_var(new_var);
-			}
-		}
-		i++;
-	}
-}
-
-int	set_variable(char *name, char *value)
-{
-	t_shell_var	*var;
-	t_shell_var	*new_var;
-
-	var = find_variable(name);
 	if (var)
 	{
-		free(var->value);
-		var->value = ft_strdup(value);
-		if (var->value)
-			return (0);
-		else
-			return (-1);
-	}
-	new_var = (t_shell_var *)ft_calloc(sizeof(*new_var), 1);
-	if (!new_var)
-		return (-1);
-	new_var->name = ft_strdup(name);
-	new_var->value = ft_strdup(value);
-	if (!new_var->name || !new_var->value)
-	{
-		dispose_var(new_var);
-		return (-1);
-	}
-	add_variable(new_var);
-	return (0);
-}
-
-int	unset_variable(char *name)
-{
-	t_varlist	*list;
-	size_t		i;
-	size_t		j;
-
-	list = varlist(NULL, GET);
-	if (!list || !list->list || !name)
-		return (-1);
-	i = 0;
-	while (i < list->list_len)
-	{
-		if (list->list[i] && list->list[i]->name &&
-			ft_strcmp(list->list[i]->name, name) == 0)
+		while (var)
 		{
-			dispose_var(list->list[i]);
-			j = i;
-			while (j < list->list_len - 1)
-			{
-				list->list[j] = list->list[j + 1];
-				j++;
-			}
-			list->list[list->list_len - 1] = NULL;
-			list->list_len--;
-			return (0);
+			ft_printf("%s=%s\n", var->name, var->value);
+			var = var->next;
 		}
-		i++;
 	}
-	return (-1);
 }
 
 void	initialize_shell_variables(char **env)
 {
-	create_variable_tables();
 	if (env && *env)
-		set_shell_var(env);
+		set_var(env);
 }

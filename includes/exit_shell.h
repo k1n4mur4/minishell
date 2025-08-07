@@ -3,6 +3,7 @@
 
 #include "variables.h"
 #include "exit_value.h"
+#include "ft_var.h"
 
 int	exit_shell(void);
 
