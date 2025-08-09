@@ -120,20 +120,16 @@ static void	set_var(char **env)
 	}
 }
 
-void	print_var(t_var *var)
-{
-	if (var)
-	{
-		while (var)
-		{
-			ft_printf("%s=%s\n", var->name, var->value);
-			var = var->next;
-		}
-	}
-}
-
 void	initialize_shell_variables(char **env)
 {
 	if (env && *env)
 		set_var(env);
+}
+
+void	update_var_value(t_var *var, char *new_value)
+{
+	if (!var)
+		return ;
+	free(var->value);
+	var->value = ft_strdup(new_value);
 }
