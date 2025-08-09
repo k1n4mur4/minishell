@@ -120,10 +120,48 @@ static void	set_var(char **env)
 	}
 }
 
+static void	initialize_shlvl(void)
+{
+	t_var	*shlvl_var;
+	char	*current_value;
+	int		level;
+	char	*new_value;
+
+	shlvl_var = find_variable("SHLVL");
+	if (shlvl_var && shlvl_var->value)
+	{
+		current_value = shlvl_var->value;
+		level = ft_atoi(current_value);
+		level++;
+	}
+	else
+	{
+		level = 1;
+	}
+	new_value = ft_itoa(level);
+	if (!new_value)
+		return ;
+	if (shlvl_var)
+	{
+		free(shlvl_var->value);
+		shlvl_var->value = new_value;
+	}
+	else
+	{
+		shlvl_var = make_var("SHLVL", new_value);
+		if (shlvl_var)
+		{
+			make_varlist(shlvl_var);
+		}
+		free(new_value);
+	}
+}
+
 void	initialize_shell_variables(char **env)
 {
 	if (env && *env)
 		set_var(env);
+	initialize_shlvl();
 }
 
 void	update_var_value(t_var *var, char *new_value)
