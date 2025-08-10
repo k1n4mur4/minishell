@@ -1,10 +1,16 @@
-#include "variables.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   variables.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 04:40:00 by kinamura          #+#    #+#             */
+/*   Updated: 2025/08/11 04:40:00 by kinamura         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_var	*find_variable(char	*name);
-t_var	*make_varlist(t_var	*var);
-void	unset_variable(char *name);
-t_var	*create_var(char *str);
-void	initialize_shell_variables(char **env);
+#include "variables_internal.h"
 
 t_var	*find_variable(char	*name)
 {
@@ -65,7 +71,7 @@ void	unset_variable(char *name)
 	while (temp)
 	{
 		if (temp->name && ft_strcmp(temp->name, name) == 0)
-			break;
+			break ;
 		prev = temp;
 		temp = temp->next;
 	}
@@ -77,91 +83,6 @@ void	unset_variable(char *name)
 			prev->next = temp->next;
 		dispose_var(temp);
 	}
-}
-
-t_var	*create_var(char *str)
-{
-	t_var	*var;
-	char	*name;
-	char	*value;
-	char	*equal;
-
-	equal = ft_strchr(str, '=');
-	if (equal)
-	{
-		name = ft_strndup(str, equal - str);
-		value = ft_strdup(equal + 1);
-	}
-	else
-	{
-		name = ft_strdup(str);
-		value = NULL;
-	}
-	var = make_var(name, value);
-	if (name)
-		free(name);
-	if (value)
-		free(value);
-	return (var);
-}
-
-static void	set_var(char **env)
-{
-	t_var	*var;
-	int		i;
-
-	i = 0;
-	while (env[i])
-	{
-		var = create_var(env[i]);
-		if (var)
-			make_varlist(var);
-		i++;
-	}
-}
-
-static void	initialize_shlvl(void)
-{
-	t_var	*shlvl_var;
-	char	*current_value;
-	int		level;
-	char	*new_value;
-
-	shlvl_var = find_variable("SHLVL");
-	if (shlvl_var && shlvl_var->value)
-	{
-		current_value = shlvl_var->value;
-		level = ft_atoi(current_value);
-		level++;
-	}
-	else
-	{
-		level = 1;
-	}
-	new_value = ft_itoa(level);
-	if (!new_value)
-		return ;
-	if (shlvl_var)
-	{
-		free(shlvl_var->value);
-		shlvl_var->value = new_value;
-	}
-	else
-	{
-		shlvl_var = make_var("SHLVL", new_value);
-		if (shlvl_var)
-		{
-			make_varlist(shlvl_var);
-		}
-		free(new_value);
-	}
-}
-
-void	initialize_shell_variables(char **env)
-{
-	if (env && *env)
-		set_var(env);
-	initialize_shlvl();
 }
 
 void	update_var_value(t_var *var, char *new_value)

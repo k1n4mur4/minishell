@@ -50,9 +50,7 @@ int		handle_input_redirect(char *filename);
 int		handle_output_redirect(char *filename, int append);
 int		handle_heredoc(char *delimiter);
 
-pid_t	create_process(void);
 int		wait_for_process(pid_t pid);
-void	cleanup_process(pid_t pid);
 
 void	init_exec_context(t_exec_context *ctx);
 void	cleanup_exec_context(t_exec_context *ctx);
@@ -65,5 +63,13 @@ int		count_word_list(t_word_list *words);
 int		count_variables(void);
 char	*build_path(char *dir, char *command);
 char	*build_env_string(char *name, char *value);
+
+void	free_partial_argv(char **argv, int count);
+int		fill_argv_array(char **argv, t_word_list *words, int count);
+int		fill_envp_array(char **envp, t_var *vars, int count);
+char	*search_in_paths(char **paths, char *command);
+
+void	read_heredoc_input(int write_fd, char *delimiter);
+int		setup_heredoc_pipe(int pipefd[2]);
 
 #endif

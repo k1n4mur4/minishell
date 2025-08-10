@@ -14,66 +14,59 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-static char	*get_prompt(void)
+static int	handle_command_option(char **argv, char **env)
 {
-	t_var	*ps1_var;
-	char	*prompt;
+	int	exit_status;
 
-	ps1_var = find_variable("PS1");
-	if (ps1_var && ps1_var->value)
-		prompt = ps1_var->value;
-	else
-		prompt = "minishell$ ";
-	return (prompt);
+	if (!argv[2])
+		return (EXECUTION_FAILURE);
+	initialize_shell_variables(env);
+	shell_initialize();
+	process_command_line(argv[2]);
+	exit_status = exit_value(EXECUTION_SUCCESS, GET);
+	return (exit_status);
 }
 
-static void	shell_initialize(void)
+static int	execute_stdin_commands(void)
 {
-	t_var	*ps1_var;
+	char	*line;
 
-	ps1_var = find_variable("PS1");
-	if (!ps1_var)
+	line = readline("");
+	while (line != NULL)
 	{
-		ps1_var = make_var("PS1", "minishell$ ");
-		if (ps1_var)
-			make_varlist(ps1_var);
+		process_command_line(line);
+		free(line);
+		line = readline("");
 	}
+	return (exit_value(EXECUTION_SUCCESS, GET));
+}
+
+static char	*read_input_line(void)
+{
+	char	*prompt;
+	char	*line;
+
+	g_interrupt_state = 0;
+	prompt = get_prompt();
+	line = readline(prompt);
+	if (!line)
+		ft_printf("exit\n");
+	return (line);
 }
 
 static int	reader_loop(void)
 {
-	char		*line;
-	char		*prompt;
-	t_token		*tokens;
-	t_command	*cmd;
+	char	*line;
 
 	setup_signals();
 	while (1)
 	{
-		g_interrupt_state = 0;
-		prompt = get_prompt();
-		line = readline(prompt);
+		line = read_input_line();
 		if (!line)
-		{
-			ft_printf("exit\n");
 			break ;
-		}
 		if (*line)
-		{
 			add_history(line);
-			tokens = tokenize_input(line);
-			if (tokens)
-			{
-				cmd = parse_command_line(tokens);
-				if (cmd)
-				{
-					expand_variables(cmd);
-					execute_command(cmd);
-					free_command(cmd);
-				}
-				free_tokens(tokens);
-			}
-		}
+		process_command_line(line);
 		free(line);
 	}
 	return (exit_value(EXECUTION_SUCCESS, GET));
@@ -81,6 +74,8 @@ static int	reader_loop(void)
 
 int	main(int argc, char **argv, char **env)
 {
+	if (argc >= 3 && ft_strcmp(argv[1], "-c") == 0)
+		return (handle_command_option(argv, env));
 	if (argc > 1)
 	{
 		if (ft_strcmp(argv[1], "--version") == 0)
@@ -98,31 +93,7 @@ int	main(int argc, char **argv, char **env)
 	if (isatty(STDIN_FILENO))
 		reader_loop();
 	else
-	{
-		char	*line;
-		t_token	*tokens;
-		t_command *cmd;
-		
-		while ((line = readline("")) != NULL)
-		{
-			if (*line)
-			{
-				tokens = tokenize_input(line);
-				if (tokens)
-				{
-					cmd = parse_command_line(tokens);
-					if (cmd)
-					{
-						expand_variables(cmd);
-						execute_command(cmd);
-						free_command(cmd);
-					}
-					free_tokens(tokens);
-				}
-			}
-			free(line);
-		}
-	}
+		execute_stdin_commands();
 	exit_shell();
 	return (exit_value(EXECUTION_SUCCESS, GET));
 }

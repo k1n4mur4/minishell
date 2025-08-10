@@ -29,6 +29,5 @@ void		add_word_to_list(t_word_list **list, t_word_desc *word);
 void		free_command(t_command *cmd);
 void		free_word_list(t_word_list *list);
 void		free_redirect(t_redirect *redir);
-void		print_command(t_command *cmd);
 
 #endif

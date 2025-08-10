@@ -6,13 +6,25 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:46:31 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 05:46:32 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/11 04:09:07 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "variables.h"
 #include "shell.h"
+
+static int	process_unset_arg(char *arg)
+{
+	if (!validate_identifier(arg))
+	{
+		ft_dprintf(STDERR_FILENO,
+			"minishell: unset: `%s': not a valid identifier\n", arg);
+		return (EXECUTION_FAILURE);
+	}
+	unset_variable(arg);
+	return (EXECUTION_SUCCESS);
+}
 
 int	builtin_unset(t_word_list *args)
 {
@@ -29,15 +41,8 @@ int	builtin_unset(t_word_list *args)
 	{
 		if (current->word && current->word->word)
 		{
-			if (!validate_identifier(current->word->word))
-			{
-				ft_dprintf(STDERR_FILENO,
-					"minishell: unset: `%s': not a valid identifier\n",
-					current->word->word);
+			if (process_unset_arg(current->word->word) == EXECUTION_FAILURE)
 				exit_status = EXECUTION_FAILURE;
-			}
-			else
-				unset_variable(current->word->word);
 		}
 		current = current->next;
 	}

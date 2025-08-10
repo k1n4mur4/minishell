@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:35:42 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 05:35:43 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/11 05:53:59 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include "shell.h"
 
 static t_builtin	g_builtins[] = {
-	{"echo", builtin_echo},
-	{"cd", builtin_cd},
-	{"pwd", builtin_pwd},
-	{"export", builtin_export},
-	{"unset", builtin_unset},
-	{"env", builtin_env},
-	{"exit", builtin_exit},
-	{NULL, NULL}
+{"echo", builtin_echo},
+{"cd", builtin_cd},
+{"pwd", builtin_pwd},
+{"export", builtin_export},
+{"unset", builtin_unset},
+{"env", builtin_env},
+{"exit", builtin_exit},
+{NULL, NULL}
 };
 
 int	is_builtin(char *command)

@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	VARIABLES_H
-# define	VARIABLES_H
+#ifndef VARIABLES_H
+# define VARIABLES_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include "type.h"
-#include "var.h"
-#include "ft_var.h"
+# include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
+# include "type.h"
+# include "var.h"
+# include "ft_var.h"
 
 // variables.c
 t_var	*find_variable(char	*name);
