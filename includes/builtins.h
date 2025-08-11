@@ -27,7 +27,6 @@ typedef struct s_builtin
 
 int		is_builtin(char *command);
 int		execute_builtin(t_simple_com *cmd);
-int		find_builtin_index(char *command);
 
 int		builtin_echo(t_word_list *args);
 int		builtin_cd(t_word_list *args);

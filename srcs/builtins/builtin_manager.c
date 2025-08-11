@@ -6,66 +6,56 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:35:42 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 05:53:59 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/11 15:04:57 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "shell.h"
 
-static t_builtin	g_builtins[] = {
-{"echo", builtin_echo},
-{"cd", builtin_cd},
-{"pwd", builtin_pwd},
-{"export", builtin_export},
-{"unset", builtin_unset},
-{"env", builtin_env},
-{"exit", builtin_exit},
-{NULL, NULL}
-};
-
 int	is_builtin(char *command)
 {
-	int	i;
-
 	if (!command)
 		return (0);
-	i = 0;
-	while (g_builtins[i].name)
-	{
-		if (ft_strcmp(command, g_builtins[i].name) == 0)
-			return (1);
-		i++;
-	}
+	if (ft_strcmp(command, "echo") == 0)
+		return (1);
+	if (ft_strcmp(command, "cd") == 0)
+		return (1);
+	if (ft_strcmp(command, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(command, "export") == 0)
+		return (1);
+	if (ft_strcmp(command, "unset") == 0)
+		return (1);
+	if (ft_strcmp(command, "env") == 0)
+		return (1);
+	if (ft_strcmp(command, "exit") == 0)
+		return (1);
 	return (0);
-}
-
-int	find_builtin_index(char *command)
-{
-	int	i;
-
-	if (!command)
-		return (-1);
-	i = 0;
-	while (g_builtins[i].name)
-	{
-		if (ft_strcmp(command, g_builtins[i].name) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
 }
 
 int	execute_builtin(t_simple_com *cmd)
 {
-	int	index;
+	char	*command;
 
 	if (!cmd || !cmd->words || !cmd->words->word || !cmd->words->word->word)
 		return (EXECUTION_FAILURE);
-	index = find_builtin_index(cmd->words->word->word);
-	if (index == -1)
-		return (EXECUTION_FAILURE);
-	return (g_builtins[index].func(cmd->words));
+	command = cmd->words->word->word;
+	if (ft_strcmp(command, "echo") == 0)
+		return (builtin_echo(cmd->words));
+	if (ft_strcmp(command, "cd") == 0)
+		return (builtin_cd(cmd->words));
+	if (ft_strcmp(command, "pwd") == 0)
+		return (builtin_pwd(cmd->words));
+	if (ft_strcmp(command, "export") == 0)
+		return (builtin_export(cmd->words));
+	if (ft_strcmp(command, "unset") == 0)
+		return (builtin_unset(cmd->words));
+	if (ft_strcmp(command, "env") == 0)
+		return (builtin_env(cmd->words));
+	if (ft_strcmp(command, "exit") == 0)
+		return (builtin_exit(cmd->words));
+	return (EXECUTION_FAILURE);
 }
 
 int	count_args(t_word_list *args)

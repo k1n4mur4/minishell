@@ -12,6 +12,7 @@
 
 #include "executor.h"
 #include "shell.h"
+#include "redirect_internal.h"
 
 void	read_heredoc_input(int write_fd, char *delimiter)
 {

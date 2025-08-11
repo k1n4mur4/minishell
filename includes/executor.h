@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:17:32 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 05:17:33 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/11 14:58:46 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "command.h"
 # include <sys/wait.h>
+# include "variables.h"
 
 # define EXECUTION_SUCCESS	0
 # define EXECUTION_FAILURE	1

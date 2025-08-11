@@ -6,15 +6,13 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 04:40:00 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 04:40:00 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/11 14:57:32 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-
-volatile sig_atomic_t	g_interrupt_state;
 
 static void	interactive_sigint_handler(int sig)
 {
