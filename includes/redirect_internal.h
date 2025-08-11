@@ -16,9 +16,14 @@
 # include "executor.h"
 # include "shell.h"
 
-void			write_heredoc_line(int pipefd, char *line);
-int				read_heredoc_interactive(int pipefd, char *delimiter);
-int				read_heredoc_non_interactive(int pipefd, char *delimiter);
+void			write_heredoc_line(int fd, char *line);
+int				read_heredoc_interactive(int fd, char *delimiter,
+					int expand_vars);
+int				read_heredoc_non_interactive(int fd, char *delimiter,
+					int expand_vars);
+char			*create_temp_heredoc_file(void);
+int				should_expand_variables(char *delimiter);
+char			*expand_heredoc_line(char *line);
 
 int				is_output_redirect(t_redirect *redirect);
 t_redirect		*find_last_input_redirect(t_redirect *redirects);

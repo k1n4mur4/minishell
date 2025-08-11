@@ -18,8 +18,11 @@
 
 extern volatile sig_atomic_t	g_interrupt_state;
 
+void	interactive_sigint_handler(int sig);
+void	heredoc_sigint_handler(int sig);
 void	setup_signals(void);
 void	setup_exec_signals(void);
+void	setup_heredoc_signals(void);
 void	reset_signals(void);
 
 #endif

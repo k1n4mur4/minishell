@@ -31,7 +31,12 @@ void	shell_initialize(void)
 	t_var	*ps1_var;
 
 	ps1_var = find_variable("PS1");
-	if (!ps1_var)
+	if (ps1_var)
+	{
+		free(ps1_var->value);
+		ps1_var->value = ft_strdup("minishell$ ");
+	}
+	else
 	{
 		ps1_var = make_var("PS1", "minishell$ ");
 		if (ps1_var)
