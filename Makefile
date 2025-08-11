@@ -78,6 +78,7 @@ BUILTINS_SRCS	=	$(BUILTINS_DIR)/builtin_cd.c \
 			$(BUILTINS_DIR)/builtin_exit.c \
 			$(BUILTINS_DIR)/builtin_export.c \
 			$(BUILTINS_DIR)/builtin_export_utils.c \
+			$(BUILTINS_DIR)/builtin_export_sort.c \
 			$(BUILTINS_DIR)/builtin_manager.c \
 			$(BUILTINS_DIR)/builtin_pwd.c \
 			$(BUILTINS_DIR)/builtin_unset.c

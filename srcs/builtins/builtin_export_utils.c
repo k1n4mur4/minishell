@@ -47,12 +47,22 @@ void	print_export_var(const char *name, const char *value)
 
 void	print_sorted_env(void)
 {
-	t_var	*current;
+	t_var	**var_array;
+	int		count;
+	int		i;
 
-	current = ft_var(NULL, GET);
-	while (current)
+	count = count_vars(ft_var(NULL, GET));
+	if (count == 0)
+		return ;
+	var_array = create_var_array(count);
+	if (!var_array)
+		return ;
+	sort_var_array(var_array, count);
+	i = 0;
+	while (i < count)
 	{
-		print_export_var(current->name, current->value);
-		current = current->next;
+		print_export_var(var_array[i]->name, var_array[i]->value);
+		i++;
 	}
+	free(var_array);
 }
