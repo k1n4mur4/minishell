@@ -64,3 +64,9 @@ minishell
 
 # IDE directories
 .vscode/
+
+*.md
+*.txt
+
+.CLAUDE
+./bash/

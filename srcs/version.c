@@ -12,9 +12,6 @@
 
 #include "config.h"
 
-char	*shell_version_string(void);
-void	show_shell_version(int extended);
-
 char	*shell_version_string(void)
 {
 	static char	tt[32];

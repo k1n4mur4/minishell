@@ -13,10 +13,11 @@
 #ifndef VAR_H
 # define VAR_H
 
-#include <unistd.h>
-#include "libft.h"
+# include <unistd.h>
+# include "libft.h"
 
-typedef struct s_var {
+typedef struct s_var
+{
 	char			*name;
 	char			*value;
 	struct s_var	*next;
