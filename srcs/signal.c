@@ -14,6 +14,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+volatile sig_atomic_t	g_interrupt_state;
+
 static void	interactive_sigint_handler(int sig)
 {
 	(void)sig;
