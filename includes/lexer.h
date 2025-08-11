@@ -31,7 +31,8 @@ typedef enum e_quote_type
 {
 	QUOTE_NONE,
 	QUOTE_SINGLE,
-	QUOTE_DOUBLE
+	QUOTE_DOUBLE,
+	QUOTE_LOCALE
 }	t_quote_type;
 
 typedef struct s_token

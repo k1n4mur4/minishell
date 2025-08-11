@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser_internal.h"
+#include "shell.h"
 
 t_word_desc	*create_word(char *str)
 {
@@ -82,6 +83,16 @@ void	handle_simple_command_redirections(t_simple_com *simple,
 {
 	t_redirect	*new_redir;
 
+	if (!is_valid_redirect_syntax(*tokens))
+	{
+		if (*tokens)
+			report_syntax_error((*tokens)->next);
+		else
+			report_syntax_error(NULL);
+		if (*tokens)
+			*tokens = (*tokens)->next;
+		return ;
+	}
 	new_redir = create_redirect((*tokens)->type, (*tokens)->next->value);
 	if (new_redir)
 	{

@@ -74,24 +74,35 @@ char	*extract_regular_word(char **input)
 	return (word);
 }
 
-char	*process_word_part(char **input, char *result, t_quote_type *q_type)
+static char	*handle_locale_or_quote(char **input, t_quote_type *q_type)
 {
 	char			*part;
-	char			*temp;
 	t_quote_type	current_quote;
 
-	if (**input == '\'' || **input == '"')
-	{
+	if (**input == '$' && *(*input + 1) == '"')
+		part = extract_locale_string(input, &current_quote);
+	else
 		part = extract_quoted_content(input, &current_quote);
-		if (!part)
-		{
-			ft_dprintf(STDERR_FILENO,
-				"minishell: syntax error: unclosed quote\n");
-			return (NULL);
-		}
-		if (*q_type == QUOTE_NONE)
-			*q_type = current_quote;
+	if (!part)
+	{
+		ft_dprintf(STDERR_FILENO,
+			"minishell: syntax error: unclosed quote\n");
+		return (NULL);
 	}
+	if (*q_type == QUOTE_NONE)
+		*q_type = current_quote;
+	return (part);
+}
+
+char	*process_word_part(char **input, char *result, t_quote_type *q_type)
+{
+	char	*part;
+	char	*temp;
+
+	if (**input == '$' && *(*input + 1) == '"')
+		part = handle_locale_or_quote(input, q_type);
+	else if (**input == '\'' || **input == '"')
+		part = handle_locale_or_quote(input, q_type);
 	else
 		part = extract_regular_word(input);
 	if (!part)
@@ -99,27 +110,4 @@ char	*process_word_part(char **input, char *result, t_quote_type *q_type)
 	temp = ft_strjoin(result, part);
 	free(part);
 	return (temp);
-}
-
-char	*extract_word(char **input, t_quote_type *quote_type)
-{
-	char	*result;
-	char	*temp;
-
-	*quote_type = QUOTE_NONE;
-	result = ft_strdup("");
-	if (!result)
-		return (NULL);
-	while (**input && !is_whitespace(**input) && !is_metachar(**input))
-	{
-		temp = process_word_part(input, result, quote_type);
-		if (!temp)
-		{
-			free(result);
-			return (NULL);
-		}
-		free(result);
-		result = temp;
-	}
-	return (result);
 }
