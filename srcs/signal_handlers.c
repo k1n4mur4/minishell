@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 04:40:00 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 14:57:32 by kinamura         ###   ########.fr       */
+/*   Created: 2025/08/11 21:00:00 by kinamura          #+#    #+#             */
+/*   Updated: 2025/08/11 17:46:54 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,19 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-volatile sig_atomic_t	g_interrupt_state;
-
-void	setup_signals(void)
+void	interactive_sigint_handler(int sig)
 {
-	signal(SIGINT, interactive_sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	(void)sig;
+	g_interrupt_state = SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-void	setup_exec_signals(void)
+void	heredoc_sigint_handler(int sig)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	setup_heredoc_signals(void)
-{
-	signal(SIGINT, heredoc_sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	reset_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	(void)sig;
+	g_interrupt_state = SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
 }

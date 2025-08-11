@@ -73,4 +73,10 @@ char	*search_in_paths(char **paths, char *command);
 void	read_heredoc_input(int write_fd, char *delimiter);
 int		setup_heredoc_pipe(int pipefd[2]);
 
+int		find_and_validate_command(t_simple_com *cmd, char **command_path);
+int		build_command_arrays(t_simple_com *cmd, char ***argv, char ***envp);
+int		prepare_external_command(t_simple_com *cmd, char **command_path,
+			char ***argv, char ***envp);
+int		handle_fork_and_exec(char *command_path, char **argv, char **envp);
+
 #endif

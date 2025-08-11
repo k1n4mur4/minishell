@@ -41,6 +41,11 @@ int		validate_identifier(const char *str);
 void	print_export_var(const char *name, const char *value);
 void	print_sorted_env(void);
 
+/* Export sorting functions - builtin_export_sort.c */
+int		count_vars(t_var *list);
+void	sort_var_array(t_var **arr, int count);
+t_var	**create_var_array(int count);
+
 /* CD utility functions - builtin_cd_utils.c */
 char	*get_home_directory(void);
 char	*get_oldpwd_directory(void);

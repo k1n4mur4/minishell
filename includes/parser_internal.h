@@ -31,4 +31,8 @@ void		handle_simple_command_word(t_simple_com *simple, t_token **tokens);
 void		handle_simple_command_redirections(t_simple_com *simple,
 				t_token **tokens);
 
+/* Error handling functions */
+int			report_syntax_error(t_token *token);
+int			is_valid_redirect_syntax(t_token *current);
+
 #endif

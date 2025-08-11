@@ -11,64 +11,84 @@
 /* ************************************************************************** */
 
 #include "redirect_internal.h"
+#include "expander.h"
+#include "sig.h"
 #include <readline/readline.h>
 #include <stdio.h>
+#include <fcntl.h>
 
-void	write_heredoc_line(int pipefd, char *line)
+static void	cleanup_heredoc_file(char *temp_file)
 {
-	write(pipefd, line, ft_strlen(line));
-	write(pipefd, "\n", 1);
+	if (temp_file)
+	{
+		unlink(temp_file);
+		free(temp_file);
+	}
 }
 
-int	read_heredoc_interactive(int pipefd, char *delimiter)
+static int	setup_heredoc_write(char *delimiter, char *temp_file)
 {
-	char	*line;
+	int	fd;
 
-	line = readline("> ");
-	if (!line || ft_strcmp(line, delimiter) == 0)
+	setup_heredoc_signals();
+	fd = open(temp_file, O_WRONLY);
+	if (fd == -1)
 	{
-		free(line);
-		return (0);
+		perror("minishell: heredoc");
+		cleanup_heredoc_file(temp_file);
+		setup_signals();
+		return (-1);
 	}
-	write_heredoc_line(pipefd, line);
-	free(line);
-	return (1);
+	read_heredoc_input(fd, delimiter);
+	close(fd);
+	setup_signals();
+	return (0);
 }
 
-int	read_heredoc_non_interactive(int pipefd, char *delimiter)
+static int	setup_heredoc_read(char *temp_file)
 {
-	char	buffer[1024];
-	char	*line;
+	int	fd;
 
-	if (!fgets(buffer, sizeof(buffer), stdin))
-		return (0);
-	line = ft_strtrim(buffer, "\n");
-	if (!line || ft_strcmp(line, delimiter) == 0)
+	fd = open(temp_file, O_RDONLY);
+	if (fd == -1)
 	{
-		free(line);
-		return (0);
+		perror("minishell: heredoc");
+		cleanup_heredoc_file(temp_file);
+		return (EXECUTION_FAILURE);
 	}
-	write_heredoc_line(pipefd, line);
-	free(line);
-	return (1);
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("minishell: heredoc");
+		close(fd);
+		cleanup_heredoc_file(temp_file);
+		return (EXECUTION_FAILURE);
+	}
+	close(fd);
+	return (EXECUTION_SUCCESS);
 }
 
 int	handle_heredoc(char *delimiter)
 {
-	int	pipefd[2];
+	char	*temp_file;
 
 	if (!delimiter)
 		return (EXECUTION_FAILURE);
-	if (setup_heredoc_pipe(pipefd) != EXECUTION_SUCCESS)
-		return (EXECUTION_FAILURE);
-	read_heredoc_input(pipefd[1], delimiter);
-	close(pipefd[1]);
-	if (dup2(pipefd[0], STDIN_FILENO) == -1)
+	temp_file = create_temp_heredoc_file();
+	if (!temp_file)
 	{
-		perror("minishell");
-		close(pipefd[0]);
+		perror("minishell: heredoc");
 		return (EXECUTION_FAILURE);
 	}
-	close(pipefd[0]);
+	if (setup_heredoc_write(delimiter, temp_file) == -1)
+		return (EXECUTION_FAILURE);
+	if (g_interrupt_state == SIGINT)
+	{
+		g_interrupt_state = 0;
+		cleanup_heredoc_file(temp_file);
+		return (EXECUTION_FAILURE);
+	}
+	if (setup_heredoc_read(temp_file) != EXECUTION_SUCCESS)
+		return (EXECUTION_FAILURE);
+	cleanup_heredoc_file(temp_file);
 	return (EXECUTION_SUCCESS);
 }

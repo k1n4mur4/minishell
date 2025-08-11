@@ -23,13 +23,69 @@ UTILS_DIR	=	$(SRCS_DIR)/utils
 OBJS_DIR	=	./objs
 
 # Sources
-SRCS		=	$(wildcard $(SRCS_DIR)/*.c)
-COM_SRCS	=	$(wildcard $(COM_DIR)/*.c)
-EXEC_SRCS	=	$(wildcard $(EXEC_DIR)/*.c)
-PARS_SRCS	=	$(wildcard $(PARS_DIR)/*.c)
-BUILTINS_SRCS	=	$(wildcard $(BUILTINS_DIR)/*.c)
-UTILS_SRCS	=	$(wildcard $(UTILS_DIR)/*.c)
-SRCS		+=	$(COM_SRCS) $(EXEC_SRCS) $(PARS_SRCS) $(BUILTINS_SRCS) $(UTILS_SRCS)
+SRCS		=	$(SRCS_DIR)/shell.c \
+			$(SRCS_DIR)/shell_command.c \
+			$(SRCS_DIR)/shell_utils.c \
+			$(SRCS_DIR)/eval.c \
+			$(SRCS_DIR)/exit_shell.c \
+			$(SRCS_DIR)/exit_value.c \
+			$(SRCS_DIR)/ft_var.c \
+			$(SRCS_DIR)/make_cmd.c \
+			$(SRCS_DIR)/make_cmd_cleanup.c \
+			$(SRCS_DIR)/make_cmd_utils.c \
+			$(SRCS_DIR)/make_var.c \
+			$(SRCS_DIR)/variables.c \
+			$(SRCS_DIR)/variables_create.c \
+			$(SRCS_DIR)/variables_utils.c \
+			$(SRCS_DIR)/dispose_var.c \
+			$(SRCS_DIR)/signal.c \
+			$(SRCS_DIR)/signal_handlers.c \
+			$(SRCS_DIR)/version.c
+
+EXEC_SRCS	=	$(EXEC_DIR)/executor.c \
+			$(EXEC_DIR)/executor_helpers.c \
+			$(EXEC_DIR)/executor_utils.c \
+			$(EXEC_DIR)/heredoc_input.c \
+			$(EXEC_DIR)/heredoc_utils.c \
+			$(EXEC_DIR)/process.c \
+			$(EXEC_DIR)/process_helpers.c \
+			$(EXEC_DIR)/process_utils.c \
+			$(EXEC_DIR)/redirect.c \
+			$(EXEC_DIR)/redirect_heredoc.c \
+			$(EXEC_DIR)/redirect_process.c \
+			$(EXEC_DIR)/redirect_utils.c
+
+PARS_SRCS	=	$(PARS_DIR)/expander.c \
+			$(PARS_DIR)/expander_core.c \
+			$(PARS_DIR)/expander_helpers.c \
+			$(PARS_DIR)/expander_utils.c \
+			$(PARS_DIR)/lexer_core.c \
+			$(PARS_DIR)/lexer_extract.c \
+			$(PARS_DIR)/lexer_handlers.c \
+			$(PARS_DIR)/lexer_locale.c \
+			$(PARS_DIR)/lexer_utils.c \
+			$(PARS_DIR)/parser.c \
+			$(PARS_DIR)/parser_cleanup.c \
+			$(PARS_DIR)/parser_error.c \
+			$(PARS_DIR)/parser_helpers.c \
+			$(PARS_DIR)/parser_redirect.c \
+			$(PARS_DIR)/parser_utils.c
+
+BUILTINS_SRCS	=	$(BUILTINS_DIR)/builtin_cd.c \
+			$(BUILTINS_DIR)/builtin_cd_utils.c \
+			$(BUILTINS_DIR)/builtin_echo.c \
+			$(BUILTINS_DIR)/builtin_env.c \
+			$(BUILTINS_DIR)/builtin_exit.c \
+			$(BUILTINS_DIR)/builtin_export.c \
+			$(BUILTINS_DIR)/builtin_export_utils.c \
+			$(BUILTINS_DIR)/builtin_export_sort.c \
+			$(BUILTINS_DIR)/builtin_manager.c \
+			$(BUILTINS_DIR)/builtin_pwd.c \
+			$(BUILTINS_DIR)/builtin_unset.c
+
+UTILS_SRCS	=	$(UTILS_DIR)/memory.c
+
+SRCS		+=	$(EXEC_SRCS) $(PARS_SRCS) $(BUILTINS_SRCS) $(UTILS_SRCS)
 
 # Objects
 OBJS		=	$(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
@@ -99,15 +155,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean re run valgrind
-
-run: $(NAME)
-	./$(NAME)
-
-val: $(NAME)
-	valgrind --leak-check=full ./$(NAME)
-
-test: $(NAME)
-	./$(NAME) 2>/dev/null
-
-.PHONY: run val test
+.PHONY: all clean fclean re

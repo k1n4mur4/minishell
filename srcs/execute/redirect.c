@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 23:31:37 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 22:00:00 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:10:00 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 #include <errno.h>
 #include <string.h>
 
-int	setup_redirections(t_redirect *redirects, t_exec_context *ctx)
+static int	setup_backup_fds(t_exec_context *ctx)
 {
-	t_redirect	*current;
-
 	if (!ctx)
 		return (EXECUTION_FAILURE);
 	init_exec_context(ctx);
@@ -28,15 +26,34 @@ int	setup_redirections(t_redirect *redirects, t_exec_context *ctx)
 		perror("minishell");
 		return (EXECUTION_FAILURE);
 	}
-	current = redirects;
-	while (current)
+	return (EXECUTION_SUCCESS);
+}
+
+static int	handle_input_redirections(t_redirect *redirects)
+{
+	t_redirect	*last_input;
+
+	last_input = find_last_input_redirect(redirects);
+	if (last_input && last_input->instruction == r_input_direction
+		&& handle_input_redirect(last_input->redirectee.filename->word)
+		== EXECUTION_FAILURE)
+		return (EXECUTION_FAILURE);
+	return (EXECUTION_SUCCESS);
+}
+
+int	setup_redirections(t_redirect *redirects, t_exec_context *ctx)
+{
+	if (setup_backup_fds(ctx) == EXECUTION_FAILURE)
+		return (EXECUTION_FAILURE);
+	if (process_all_redirections(redirects, ctx) == EXECUTION_FAILURE)
 	{
-		if (setup_single_redirect(current) == EXECUTION_FAILURE)
-		{
-			restore_redirections(ctx);
-			return (EXECUTION_FAILURE);
-		}
-		current = current->next;
+		restore_redirections(ctx);
+		return (EXECUTION_FAILURE);
+	}
+	if (handle_input_redirections(redirects) == EXECUTION_FAILURE)
+	{
+		restore_redirections(ctx);
+		return (EXECUTION_FAILURE);
 	}
 	return (EXECUTION_SUCCESS);
 }
@@ -71,56 +88,4 @@ int	setup_single_redirect(t_redirect *redir)
 	else if (redir->instruction == r_reading_until)
 		return (handle_heredoc(redir->here_doc_eof));
 	return (EXECUTION_FAILURE);
-}
-
-int	handle_input_redirect(char *filename)
-{
-	int	fd;
-
-	if (!filename)
-		return (EXECUTION_FAILURE);
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
-			filename, strerror(errno));
-		return (EXECUTION_FAILURE);
-	}
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		perror("minishell");
-		close(fd);
-		return (EXECUTION_FAILURE);
-	}
-	close(fd);
-	return (EXECUTION_SUCCESS);
-}
-
-int	handle_output_redirect(char *filename, int append)
-{
-	int	fd;
-	int	flags;
-
-	if (!filename)
-		return (EXECUTION_FAILURE);
-	flags = O_WRONLY | O_CREAT;
-	if (append)
-		flags |= O_APPEND;
-	else
-		flags |= O_TRUNC;
-	fd = open(filename, flags, 0644);
-	if (fd == -1)
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
-			filename, strerror(errno));
-		return (EXECUTION_FAILURE);
-	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		perror("minishell");
-		close(fd);
-		return (EXECUTION_FAILURE);
-	}
-	close(fd);
-	return (EXECUTION_SUCCESS);
 }
