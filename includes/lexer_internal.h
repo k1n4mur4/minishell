@@ -21,11 +21,14 @@ void	add_token_to_list(t_token **head, t_token *new_token);
 int		skip_spaces(char **input);
 
 /* Extract functions - lexer_extract.c */
-char	*extract_word(char **input, t_quote_type *quote_type);
 char	*extract_quoted_content(char **input, t_quote_type *quote_type);
 char	*extract_regular_word(char **input);
 char	*process_word_part(char **input, char *result, t_quote_type *q_type);
 int		find_closing_quote(char *str, char quote);
+
+/* Locale functions - lexer_locale.c */
+char	*extract_locale_string(char **input, t_quote_type *quote_type);
+char	*extract_word(char **input, t_quote_type *quote_type);
 
 /* Handler functions - lexer_handlers.c */
 int		handle_word(char **input, t_token **tokens);

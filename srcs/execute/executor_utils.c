@@ -77,9 +77,11 @@ int	execute_external_command(t_simple_com *cmd)
 	char	**argv;
 	char	**envp;
 	int		exit_status;
+	int		result;
 
-	if (prepare_external_command(cmd, &command_path, &argv, &envp))
-		return (EXECUTION_FAILURE);
+	result = prepare_external_command(cmd, &command_path, &argv, &envp);
+	if (result != EXECUTION_SUCCESS)
+		return (result);
 	exit_status = handle_fork_and_exec(command_path, argv, envp);
 	free(command_path);
 	free_argv_array(argv);

@@ -62,6 +62,7 @@ PARS_SRCS	=	$(PARS_DIR)/expander.c \
 			$(PARS_DIR)/lexer_core.c \
 			$(PARS_DIR)/lexer_extract.c \
 			$(PARS_DIR)/lexer_handlers.c \
+			$(PARS_DIR)/lexer_locale.c \
 			$(PARS_DIR)/lexer_utils.c \
 			$(PARS_DIR)/parser.c \
 			$(PARS_DIR)/parser_cleanup.c \
