@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "variables.h"
-#include "shell.h"
 
 int	builtin_env(t_word_list *args)
 {

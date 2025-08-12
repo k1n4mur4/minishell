@@ -15,6 +15,8 @@
 
 # include "lexer.h"
 # include "shell.h"
+# include "libft.h"
+# include <stdlib.h>
 
 /* Core functions - lexer_core.c */
 void	add_token_to_list(t_token **head, t_token *new_token);

@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "variables.h"
-#include "shell.h"
 
 static void	set_pwd_var(char *new_pwd)
 {

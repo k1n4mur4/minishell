@@ -15,6 +15,9 @@
 
 # include "command.h"
 # include "executor.h"
+# include "variables.h"
+# include "shell.h"
+# include "libft.h"
 # include <unistd.h>
 
 typedef int	(*t_builtin_func)(t_word_list *args);

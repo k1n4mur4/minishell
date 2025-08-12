@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "expander_internal.h"
-#include "lexer.h"
 
 void	handle_quote_character(int *in_single_quotes, int *i)
 {

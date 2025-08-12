@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "shell.h"
 
 static t_word_list	*check_n_flag(t_word_list *args, int *n_flag)
 {

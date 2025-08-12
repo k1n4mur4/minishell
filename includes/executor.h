@@ -14,8 +14,18 @@
 # define EXECUTOR_H
 
 # include "command.h"
-# include <sys/wait.h>
 # include "variables.h"
+# include "builtins.h"
+# include "shell.h"
+# include "sig.h"
+# include "redir.h"
+# include "libft.h"
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <signal.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <readline/readline.h>
 
 # define EXECUTION_SUCCESS	0
 # define EXECUTION_FAILURE	1

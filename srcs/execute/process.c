@@ -11,10 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "shell.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <readline/readline.h>
 
 char	*find_command_path(char *command)
 {

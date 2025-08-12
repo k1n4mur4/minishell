@@ -11,13 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "builtins.h"
-#include "shell.h"
-#include "variables.h"
-#include "sig.h"
-#include <sys/stat.h>
-#include <signal.h>
-#include <readline/readline.h>
 
 int	execute_command(t_command *cmd)
 {

@@ -6,13 +6,11 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 04:40:00 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/13 01:47:31 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:47:23 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 volatile sig_atomic_t	g_interrupt_state;
 
@@ -32,4 +30,12 @@ void	reset_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+void	setup_heredoc_signals(void)
+{
+	signal(SIGINT, heredoc_sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+	g_interrupt_state = 0;
+	rl_event_hook = heredoc_event_hook;
 }

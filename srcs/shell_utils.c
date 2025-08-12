@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "variables.h"
-#include "libft.h"
+#include "shell.h"
 
 char	*get_prompt(void)
 {

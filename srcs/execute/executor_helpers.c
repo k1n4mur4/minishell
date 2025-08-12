@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "builtins.h"
-#include "shell.h"
-#include "sig.h"
 
 int	find_and_validate_command(t_simple_com *cmd, char **command_path)
 {

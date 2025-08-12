@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "shell.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 void	free_partial_argv(char **argv, int count)
 {

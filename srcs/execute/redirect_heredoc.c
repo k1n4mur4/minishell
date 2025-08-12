@@ -38,6 +38,11 @@ static int	open_heredoc_temp(char *template)
 	return (EXECUTION_SUCCESS);
 }
 
+static void	restore_heredoc_signals(void)
+{
+	setup_signals();
+}
+
 int	redirect_heredoc(char *delimiter)
 {
 	char	*template;
@@ -55,6 +60,7 @@ int	redirect_heredoc(char *delimiter)
 		free(template);
 		return (EXECUTION_FAILURE);
 	}
+	setup_heredoc_signals();
 	while (1)
 	{
 		line = readline("> ");
@@ -62,6 +68,8 @@ int	redirect_heredoc(char *delimiter)
 		{
 			if (line)
 				free(line);
+			if (!line)
+				ft_putstr_fd("minishell: warning: here-document delimited by end-of-file\n", STDERR_FILENO);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -70,9 +78,11 @@ int	redirect_heredoc(char *delimiter)
 			break ;
 		}
 		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
 	close(fd);
+	restore_heredoc_signals();
 	if (g_interrupt_state == SIGINT)
 	{
 		g_interrupt_state = 0;

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "parser_internal.h"
 
 t_command	*parse_simple_command(t_token **tokens)
