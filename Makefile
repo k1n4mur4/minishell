@@ -45,8 +45,6 @@ SRCS		=	$(SRCS_DIR)/shell.c \
 EXEC_SRCS	=	$(EXEC_DIR)/executor.c \
 			$(EXEC_DIR)/executor_helpers.c \
 			$(EXEC_DIR)/executor_utils.c \
-			$(EXEC_DIR)/heredoc_input.c \
-			$(EXEC_DIR)/heredoc_utils.c \
 			$(EXEC_DIR)/process.c \
 			$(EXEC_DIR)/process_helpers.c \
 			$(EXEC_DIR)/process_utils.c \

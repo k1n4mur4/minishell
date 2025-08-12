@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "redirect_internal.h"
-#include <errno.h>
-#include <string.h>
+#include "redir.h"
 
 int	is_output_redirect(t_redirect *redirect)
 {

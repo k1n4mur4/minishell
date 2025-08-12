@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "eval.h"
 
 void	process_command_line(char *line)
 {

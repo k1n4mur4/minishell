@@ -14,6 +14,7 @@
 #include "builtins.h"
 #include "shell.h"
 #include "sig.h"
+#include "redir.h"
 
 static int	execute_redirections_only(t_simple_com *cmd)
 {

@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 00:06:03 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 05:54:23 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:20:54 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,9 @@
 # include "config.h"
 # include "variables.h"
 # include "exit_shell.h"
-# include "sig.h"
-# include "lexer.h"
-# include "parser.h"
-# include "expander.h"
-# include "executor.h"
-# include "builtins.h"
-# include "make_cmd.h"
-
+# include "eval.h"
 # include "libft.h"
+# include <unistd.h>
 
 # define EXECUTION_FAILURE	1
 # define EXECUTION_SUCCESS	0
