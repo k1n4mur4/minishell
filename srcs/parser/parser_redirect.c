@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "parser_internal.h"
 
 t_redirect	*create_redirect(t_token_type type, char *filename)

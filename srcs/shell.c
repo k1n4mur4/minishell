@@ -6,13 +6,11 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 01:49:39 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 04:30:58 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:20:20 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 static int	handle_command_option(char **argv, char **env)
 {
@@ -37,37 +35,6 @@ static int	execute_stdin_commands(void)
 		process_command_line(line);
 		free(line);
 		line = readline("");
-	}
-	return (exit_value(EXECUTION_SUCCESS, GET));
-}
-
-static char	*read_input_line(void)
-{
-	char	*prompt;
-	char	*line;
-
-	g_interrupt_state = 0;
-	prompt = get_prompt();
-	line = readline(prompt);
-	if (!line)
-		ft_printf("exit\n");
-	return (line);
-}
-
-static int	reader_loop(void)
-{
-	char	*line;
-
-	setup_signals();
-	while (1)
-	{
-		line = read_input_line();
-		if (!line)
-			break ;
-		if (*line)
-			add_history(line);
-		process_command_line(line);
-		free(line);
 	}
 	return (exit_value(EXECUTION_SUCCESS, GET));
 }

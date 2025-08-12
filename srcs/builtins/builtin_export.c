@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "variables.h"
-#include "shell.h"
 
 static int	validate_export_arg(const char *arg)
 {

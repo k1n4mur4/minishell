@@ -6,14 +6,11 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 17:49:10 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 17:49:19 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:15:40 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "builtins.h"
-#include "shell.h"
-#include "sig.h"
 
 int	find_and_validate_command(t_simple_com *cmd, char **command_path)
 {

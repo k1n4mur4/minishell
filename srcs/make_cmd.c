@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "make_cmd.h"
-#include "shell.h"
 
 t_word_desc	*make_bare_word(const char *string)
 {

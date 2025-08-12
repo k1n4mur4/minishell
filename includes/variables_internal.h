@@ -14,6 +14,8 @@
 # define VARIABLES_INTERNAL_H
 
 # include "variables.h"
+# include "shell.h"
+# include "libft.h"
 
 /* Variable utility functions - variables_utils.c */
 t_var	*create_var(char *str);

@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "redirect_internal.h"
-#include <errno.h>
-#include <string.h>
+#include "redir.h"
 
 static int	setup_backup_fds(t_exec_context *ctx)
 {
@@ -86,6 +84,6 @@ int	setup_single_redirect(t_redirect *redir)
 	else if (redir->instruction == r_appending_to)
 		return (handle_output_redirect(redir->redirectee.filename->word, 1));
 	else if (redir->instruction == r_reading_until)
-		return (handle_heredoc(redir->here_doc_eof));
+		return (redirect_heredoc(redir->here_doc_eof));
 	return (EXECUTION_FAILURE);
 }

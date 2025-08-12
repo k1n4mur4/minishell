@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "variables.h"
-#include "shell.h"
 
 int	count_vars(t_var *list)
 {

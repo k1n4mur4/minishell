@@ -14,6 +14,7 @@
 # define MAKE_CMD_H
 
 # include "command.h"
+# include "shell.h"
 # include "libft.h"
 
 /* Word creation functions */

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "variables.h"
 
 void	free_argv_array(char **argv)
 {

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "parser_internal.h"
-#include "shell.h"
 
 t_word_desc	*create_word(char *str)
 {

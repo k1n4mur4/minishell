@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "shell.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 char	*build_path(char *dir, char *command)
 {
@@ -65,6 +62,22 @@ void	init_exec_context(t_exec_context *ctx)
 	ctx->stdin_backup = -1;
 	ctx->stdout_backup = -1;
 	ctx->stderr_backup = -1;
+}
+
+void	handle_process_signals(int status)
+{
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+	{
+		write(STDOUT_FILENO, "Quit\n", 5);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
 }
 
 void	cleanup_exec_context(t_exec_context *ctx)

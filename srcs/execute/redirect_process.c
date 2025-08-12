@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "redirect_internal.h"
-#include <errno.h>
-#include <string.h>
+#include "redir.h"
 
 static int	handle_output_redirect_item(t_redirect *current, t_redirect *last)
 {
@@ -57,7 +55,7 @@ int	process_all_redirections(t_redirect *redirects, t_exec_context *ctx)
 		}
 		else if (current->instruction == r_reading_until)
 		{
-			if (handle_heredoc(current->here_doc_eof) == EXECUTION_FAILURE)
+			if (redirect_heredoc(current->here_doc_eof) == EXECUTION_FAILURE)
 				return (EXECUTION_FAILURE);
 		}
 		current = current->next;

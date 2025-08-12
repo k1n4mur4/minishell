@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "parser_internal.h"
-#include "shell.h"
 
 int	report_syntax_error(t_token *token)
 {

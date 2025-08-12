@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "shell.h"
 
 int	is_builtin(char *command)
 {

@@ -14,6 +14,9 @@
 # define EXPANDER_INTERNAL_H
 
 # include "expander.h"
+# include "lexer.h"
+# include "shell.h"
+# include "libft.h"
 
 /* Expansion utility functions - expander_utils.c */
 char	*extract_var_name(char *str, int *i);

@@ -6,17 +6,11 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:20:21 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 04:08:31 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:21:05 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "builtins.h"
-#include "shell.h"
-#include "variables.h"
-#include "sig.h"
-#include <sys/stat.h>
-#include <signal.h>
 
 int	execute_command(t_command *cmd)
 {
@@ -92,6 +86,18 @@ static int	finalize_pipeline(pid_t left_pid, pid_t right_pid, int *pipefd)
 	waitpid(left_pid, &left_status, 0);
 	waitpid(right_pid, &right_status, 0);
 	setup_signals();
+	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGQUIT)
+	{
+		write(STDOUT_FILENO, "Quit\n", 5);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
 	if (WIFEXITED(right_status))
 		return (WEXITSTATUS(right_status));
 	else if (WIFSIGNALED(right_status))

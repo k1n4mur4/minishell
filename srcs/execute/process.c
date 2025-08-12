@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "shell.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 char	*find_command_path(char *command)
 {
@@ -96,6 +93,7 @@ int	wait_for_process(pid_t pid)
 		perror("waitpid");
 		return (1);
 	}
+	handle_process_signals(status);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))

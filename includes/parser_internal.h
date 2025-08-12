@@ -16,6 +16,8 @@
 # include "parser.h"
 # include "command.h"
 # include "lexer.h"
+# include "shell.h"
+# include "libft.h"
 
 /* Core parsing functions - parser.c */
 t_redirect	*create_redirect(t_token_type type, char *filename);

@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:17:32 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 14:58:46 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:01:25 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,18 @@
 # define EXECUTOR_H
 
 # include "command.h"
-# include <sys/wait.h>
 # include "variables.h"
+# include "builtins.h"
+# include "shell.h"
+# include "sig.h"
+# include "redir.h"
+# include "libft.h"
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <signal.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <readline/readline.h>
 
 # define EXECUTION_SUCCESS	0
 # define EXECUTION_FAILURE	1
@@ -44,17 +54,11 @@ char	*find_command_path(char *command);
 char	**build_argv_array(t_word_list *words);
 char	**build_envp_array(void);
 
-int		setup_redirections(t_redirect *redirects, t_exec_context *ctx);
-int		restore_redirections(t_exec_context *ctx);
-int		setup_single_redirect(t_redirect *redir);
-int		handle_input_redirect(char *filename);
-int		handle_output_redirect(char *filename, int append);
-int		handle_heredoc(char *delimiter);
-
 int		wait_for_process(pid_t pid);
 
 void	init_exec_context(t_exec_context *ctx);
 void	cleanup_exec_context(t_exec_context *ctx);
+void	handle_process_signals(int status);
 
 void	free_argv_array(char **argv);
 void	free_envp_array(char **envp);
@@ -69,9 +73,6 @@ void	free_partial_argv(char **argv, int count);
 int		fill_argv_array(char **argv, t_word_list *words, int count);
 int		fill_envp_array(char **envp, t_var *vars, int count);
 char	*search_in_paths(char **paths, char *command);
-
-void	read_heredoc_input(int write_fd, char *delimiter);
-int		setup_heredoc_pipe(int pipefd[2]);
 
 int		find_and_validate_command(t_simple_com *cmd, char **command_path);
 int		build_command_arrays(t_simple_com *cmd, char ***argv, char ***envp);

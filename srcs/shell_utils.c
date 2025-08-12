@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "shell.h"
-#include "variables.h"
 
 char	*get_prompt(void)
 {

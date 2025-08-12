@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "variables.h"
-#include "shell.h"
 
 int	validate_identifier(const char *str)
 {

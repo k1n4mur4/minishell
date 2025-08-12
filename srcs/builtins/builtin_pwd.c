@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "shell.h"
 
 int	builtin_pwd(t_word_list *args)
 {

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "make_cmd.h"
-#include "shell.h"
 
 t_command	*clean_simple_command(t_command *command)
 {
