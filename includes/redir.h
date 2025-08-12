@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 00:35:10 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/13 03:05:02 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:55:14 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libft.h"
 # include "sig.h"
 # include "expander.h"
+# include "config.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -28,6 +29,7 @@
 
 # define HEREDOC_PIPESIZE 4096
 # define TEMP_HERE_DOC "/tmp/tempXXXXXX"
+# define HEREDOC_WAR "here-document delimited by end-of-file\n"
 
 typedef struct s_exec_context	t_exec_context;
 

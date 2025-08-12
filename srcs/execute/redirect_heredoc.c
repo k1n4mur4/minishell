@@ -38,15 +38,51 @@ static int	open_heredoc_temp(char *template)
 	return (EXECUTION_SUCCESS);
 }
 
-static void	restore_heredoc_signals(void)
+static int	process_heredoc_line(char *line, char *delimiter)
 {
+	if (!line || g_interrupt_state == SIGINT)
+	{
+		if (line)
+			free(line);
+		if (!line)
+			ft_dprintf(STDERR_FILENO, "%s: %s: %s",
+				PROGRAM, WARNING, HEREDOC_WAR);
+		return (1);
+	}
+	if (ft_strcmp(line, delimiter) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
+}
+
+static int	write_heredoc_content(int fd, char *delimiter)
+{
+	char	*line;
+
+	setup_heredoc_signals();
+	while (1)
+	{
+		line = readline("> ");
+		if (process_heredoc_line(line, delimiter))
+			break ;
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
 	setup_signals();
+	if (g_interrupt_state == SIGINT)
+	{
+		g_interrupt_state = 0;
+		return (EXECUTION_FAILURE);
+	}
+	return (EXECUTION_SUCCESS);
 }
 
 int	redirect_heredoc(char *delimiter)
 {
 	char	*template;
-	char	*line;
 	int		fd;
 
 	if (!delimiter)
@@ -60,35 +96,13 @@ int	redirect_heredoc(char *delimiter)
 		free(template);
 		return (EXECUTION_FAILURE);
 	}
-	setup_heredoc_signals();
-	while (1)
+	if (write_heredoc_content(fd, delimiter) == EXECUTION_FAILURE)
 	{
-		line = readline("> ");
-		if (!line || g_interrupt_state == SIGINT)
-		{
-			if (line)
-				free(line);
-			if (!line)
-				ft_putstr_fd("minishell: warning: here-document delimited by end-of-file\n", STDERR_FILENO);
-			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
-	close(fd);
-	restore_heredoc_signals();
-	if (g_interrupt_state == SIGINT)
-	{
-		g_interrupt_state = 0;
+		close(fd);
 		unlink(template);
 		free(template);
 		return (EXECUTION_FAILURE);
 	}
+	close(fd);
 	return (open_heredoc_temp(template));
 }
