@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 22:10:00 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 22:10:00 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 23:24:53 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ char	*append_var_value(char *result, char *var_value)
 	char	*temp;
 
 	temp = ft_strjoin(result, var_value);
-	if (!temp)
-	{
-		free(var_value);
-		return (result);
-	}
-	free(result);
 	free(var_value);
+	if (!temp)
+		return (result);
+	free(result);
 	return (temp);
 }
 

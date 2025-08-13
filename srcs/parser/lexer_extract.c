@@ -109,5 +109,10 @@ char	*process_word_part(char **input, char *result, t_quote_type *q_type)
 		return (NULL);
 	temp = ft_strjoin(result, part);
 	free(part);
+	if (!temp)
+	{
+		free(result);
+		return (NULL);
+	}
 	return (temp);
 }
