@@ -29,10 +29,6 @@ void	process_command_line(char *line)
 			execute_command(cmd);
 			free_command(cmd);
 		}
-		else
-		{
-			exit_value(EXECUTION_FAILURE, SET);
-		}
 		free_tokens(tokens);
 	}
 }
