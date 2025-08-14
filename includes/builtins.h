@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:18:15 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 05:18:16 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 23:08:14 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include "variables.h"
 # include "shell.h"
 # include "libft.h"
+# include "eval.h"
 # include <unistd.h>
+# include "exit_value.h"
 
 typedef int	(*t_builtin_func)(t_word_list *args);
 

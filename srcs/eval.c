@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 07:00:00 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/13 03:26:27 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/13 23:14:46 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	reader_loop(void)
 			add_history(line);
 		process_command_line(line);
 		free(line);
+		if (exit_readline(0))
+			break ;
 	}
 	return (exit_value(EXECUTION_SUCCESS, GET));
 }
