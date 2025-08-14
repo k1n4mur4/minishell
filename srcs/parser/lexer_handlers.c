@@ -67,25 +67,39 @@ int	handle_pipe(char **input, t_token **tokens)
 	return (0);
 }
 
+static void	setup_token_segments(t_token *token, t_segment_info *seg_info)
+{
+	if (seg_info && seg_info->count > 0)
+	{
+		token->segments = malloc(sizeof(t_quote_segment) * seg_info->count);
+		if (token->segments)
+		{
+			ft_memcpy(token->segments, seg_info->segments,
+				sizeof(t_quote_segment) * seg_info->count);
+			token->segment_count = seg_info->count;
+		}
+	}
+}
+
 int	handle_word(char **input, t_token **tokens)
 {
 	char			*word;
 	t_token			*token;
 	t_quote_type	quote_type;
+	t_segment_info	*seg_info;
 
-	word = extract_word(input, &quote_type);
+	word = extract_word_with_segments(input, &quote_type, &seg_info);
 	if (!word)
 		return (-1);
 	if (ft_strlen(word) == 0 && quote_type == QUOTE_NONE)
-	{
-		free(word);
-		return (0);
-	}
+		return (free(word), free_segment_info(seg_info), 0);
 	token = create_token(TOKEN_WORD, word);
 	free(word);
 	if (!token)
-		return (-1);
+		return (free_segment_info(seg_info), -1);
 	token->quote_type = quote_type;
+	setup_token_segments(token, seg_info);
+	free_segment_info(seg_info);
 	add_token_to_list(tokens, token);
 	return (1);
 }

@@ -62,6 +62,8 @@ void	dispose_word(t_word_desc *w)
 		return ;
 	if (w->word)
 		free(w->word);
+	if (w->segments)
+		free(w->segments);
 	free(w);
 }
 

@@ -21,6 +21,8 @@ t_token	*create_token(t_token_type type, char *value)
 		return (NULL);
 	token->type = type;
 	token->quote_type = QUOTE_NONE;
+	token->segments = NULL;
+	token->segment_count = 0;
 	if (value)
 	{
 		token->value = ft_strdup(value);

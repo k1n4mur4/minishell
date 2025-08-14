@@ -73,6 +73,17 @@ void	handle_simple_command_word(t_simple_com *simple, t_token **tokens)
 	if (word)
 	{
 		word->quote_type = (*tokens)->quote_type;
+		if ((*tokens)->segments && (*tokens)->segment_count > 0)
+		{
+			word->segments = malloc(sizeof(t_quote_segment)
+					* (*tokens)->segment_count);
+			if (word->segments)
+			{
+				ft_memcpy(word->segments, (*tokens)->segments,
+					sizeof(t_quote_segment) * (*tokens)->segment_count);
+				word->segment_count = (*tokens)->segment_count;
+			}
+		}
 		add_word_to_list(&simple->words, word);
 	}
 	*tokens = (*tokens)->next;

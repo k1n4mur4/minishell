@@ -13,6 +13,8 @@
 #ifndef COMMAND_H
 # define COMMAND_H
 
+# include "lexer.h"
+
 typedef enum e_instruction
 {
 	r_output_direction,
@@ -56,11 +58,20 @@ typedef enum e_command_type
 	cm_coproc
 }	t_command_type;
 
+typedef struct s_quote_segment
+{
+	int				start;
+	int				length;
+	t_quote_type	quote_type;
+}				t_quote_segment;
+
 typedef struct s_word_desc
 {
-	char	*word;
-	int		flags;
-	int		quote_type;
+	char				*word;
+	int					flags;
+	int					quote_type;
+	t_quote_segment		*segments;
+	int					segment_count;
 }				t_word_desc;
 
 typedef struct s_word_list

@@ -22,6 +22,8 @@ t_word_desc	*alloc_word_desc(void)
 	temp->flags = 0;
 	temp->word = NULL;
 	temp->quote_type = 0;
+	temp->segments = NULL;
+	temp->segment_count = 0;
 	return (temp);
 }
 
