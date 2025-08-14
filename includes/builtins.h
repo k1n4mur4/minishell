@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:18:15 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/13 23:08:14 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:36:46 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include "eval.h"
 # include <unistd.h>
 # include "exit_value.h"
+
+# define EXIT_ERR "minishell: exit: %s: numeric argument required\n"
 
 typedef int	(*t_builtin_func)(t_word_list *args);
 

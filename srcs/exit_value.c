@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 04:40:00 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/13 23:14:26 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:43:47 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,12 @@ int	exit_value(int exit_value, enum e_type type)
 int	exit_readline(int status)
 {
 	static int	exit_status = 0;
+	int			exit;
 
+	exit = exit_status;
 	if (status != 0)
-		exit_status = status;
-	return (exit_status);
+		exit_status += status;
+	else if (status == 0)
+		exit_status = 0;
+	return (exit);
 }
