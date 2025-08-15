@@ -16,6 +16,8 @@
 # include "libft.h"
 # include <stdio.h>
 
+typedef struct s_quote_segment	t_quote_segment;
+
 typedef enum e_token_type
 {
 	TOKEN_WORD,
@@ -40,6 +42,8 @@ typedef struct s_token
 	t_token_type		type;
 	char				*value;
 	t_quote_type		quote_type;
+	t_quote_segment		*segments;
+	int					segment_count;
 	struct s_token		*next;
 }	t_token;
 

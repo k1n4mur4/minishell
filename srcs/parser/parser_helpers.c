@@ -12,7 +12,7 @@
 
 #include "parser_internal.h"
 
-void	process_simple_tokens(t_simple_com *simple, t_token **tokens)
+int	process_simple_tokens(t_simple_com *simple, t_token **tokens)
 {
 	while (*tokens && (*tokens)->type != TOKEN_PIPE
 		&& (*tokens)->type != TOKEN_EOF)
@@ -23,10 +23,14 @@ void	process_simple_tokens(t_simple_com *simple, t_token **tokens)
 			|| (*tokens)->type == TOKEN_REDIRECT_OUT
 			|| (*tokens)->type == TOKEN_HEREDOC
 			|| (*tokens)->type == TOKEN_APPEND)
-			handle_simple_command_redirections(simple, tokens);
+		{
+			if (handle_simple_command_redirections(simple, tokens) != 0)
+				return (1);
+		}
 		else
 			*tokens = (*tokens)->next;
 	}
+	return (0);
 }
 
 t_command	*create_simple_command(t_simple_com *simple)

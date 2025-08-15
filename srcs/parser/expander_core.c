@@ -57,14 +57,7 @@ void	expand_word_list(t_word_list *words)
 	{
 		if (words->word && words->word->word)
 		{
-			if (words->word->quote_type == QUOTE_SINGLE)
-				expanded = ft_strdup(words->word->word);
-			else if (words->word->quote_type == QUOTE_LOCALE)
-				expanded = ft_strdup(words->word->word);
-			else if (words->word->quote_type == QUOTE_DOUBLE)
-				expanded = expand_string(words->word->word, 1);
-			else
-				expanded = expand_string(words->word->word, 0);
+			expanded = expand_word_with_segments(words->word);
 			if (expanded)
 			{
 				free(words->word->word);

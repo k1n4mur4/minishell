@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:18:15 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/10 05:18:16 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:36:46 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@
 # include "variables.h"
 # include "shell.h"
 # include "libft.h"
+# include "eval.h"
 # include <unistd.h>
+# include <errno.h>
+# include <string.h>
+# include "exit_value.h"
+
+# define EXIT_ERR "minishell: exit: %s: numeric argument required\n"
 
 typedef int	(*t_builtin_func)(t_word_list *args);
 

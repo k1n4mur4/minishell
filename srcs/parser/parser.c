@@ -20,7 +20,11 @@ t_command	*parse_simple_command(t_token **tokens)
 	simple = (t_simple_com *)ft_calloc(1, sizeof(t_simple_com));
 	if (!simple)
 		return (NULL);
-	process_simple_tokens(simple, tokens);
+	if (process_simple_tokens(simple, tokens) != 0)
+	{
+		free(simple);
+		return (NULL);
+	}
 	cmd = create_simple_command(simple);
 	if (!cmd)
 	{
@@ -81,5 +85,9 @@ t_command	*parse_pipeline(t_token **tokens)
 
 t_command	*parse_command_line(t_token *tokens)
 {
-	return (parse_pipeline(&tokens));
+	t_command	*result;
+
+	reset_syntax_error_flag();
+	result = parse_pipeline(&tokens);
+	return (result);
 }

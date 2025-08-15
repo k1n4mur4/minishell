@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser_internal.h"
+#include "exit_value.h"
 
 t_word_desc	*create_word(char *str)
 {
@@ -72,12 +73,23 @@ void	handle_simple_command_word(t_simple_com *simple, t_token **tokens)
 	if (word)
 	{
 		word->quote_type = (*tokens)->quote_type;
+		if ((*tokens)->segments && (*tokens)->segment_count > 0)
+		{
+			word->segments = malloc(sizeof(t_quote_segment)
+					* (*tokens)->segment_count);
+			if (word->segments)
+			{
+				ft_memcpy(word->segments, (*tokens)->segments,
+					sizeof(t_quote_segment) * (*tokens)->segment_count);
+				word->segment_count = (*tokens)->segment_count;
+			}
+		}
 		add_word_to_list(&simple->words, word);
 	}
 	*tokens = (*tokens)->next;
 }
 
-void	handle_simple_command_redirections(t_simple_com *simple,
+int	handle_simple_command_redirections(t_simple_com *simple,
 		t_token **tokens)
 {
 	t_redirect	*new_redir;
@@ -90,7 +102,7 @@ void	handle_simple_command_redirections(t_simple_com *simple,
 			report_syntax_error(NULL);
 		if (*tokens)
 			*tokens = (*tokens)->next;
-		return ;
+		return (1);
 	}
 	new_redir = create_redirect((*tokens)->type, (*tokens)->next->value);
 	if (new_redir)
@@ -99,4 +111,5 @@ void	handle_simple_command_redirections(t_simple_com *simple,
 		simple->redirects = new_redir;
 	}
 	*tokens = (*tokens)->next->next;
+	return (0);
 }

@@ -55,10 +55,12 @@ EXEC_SRCS	=	$(EXEC_DIR)/executor.c \
 
 PARS_SRCS	=	$(PARS_DIR)/expander.c \
 			$(PARS_DIR)/expander_core.c \
+			$(PARS_DIR)/expander_segments.c \
 			$(PARS_DIR)/expander_helpers.c \
 			$(PARS_DIR)/expander_utils.c \
 			$(PARS_DIR)/lexer_core.c \
 			$(PARS_DIR)/lexer_extract.c \
+			$(PARS_DIR)/lexer_extract_helpers.c \
 			$(PARS_DIR)/lexer_handlers.c \
 			$(PARS_DIR)/lexer_locale.c \
 			$(PARS_DIR)/lexer_utils.c \

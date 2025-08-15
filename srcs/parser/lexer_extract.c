@@ -74,26 +74,6 @@ char	*extract_regular_word(char **input)
 	return (word);
 }
 
-static char	*handle_locale_or_quote(char **input, t_quote_type *q_type)
-{
-	char			*part;
-	t_quote_type	current_quote;
-
-	if (**input == '$' && *(*input + 1) == '"')
-		part = extract_locale_string(input, &current_quote);
-	else
-		part = extract_quoted_content(input, &current_quote);
-	if (!part)
-	{
-		ft_dprintf(STDERR_FILENO,
-			"minishell: syntax error: unclosed quote\n");
-		return (NULL);
-	}
-	if (*q_type == QUOTE_NONE)
-		*q_type = current_quote;
-	return (part);
-}
-
 char	*process_word_part(char **input, char *result, t_quote_type *q_type)
 {
 	char	*part;
@@ -109,5 +89,38 @@ char	*process_word_part(char **input, char *result, t_quote_type *q_type)
 		return (NULL);
 	temp = ft_strjoin(result, part);
 	free(part);
+	if (!temp)
+	{
+		free(result);
+		return (NULL);
+	}
+	return (temp);
+}
+
+char	*process_word_part_with_segments(char **input, char *result,
+		t_quote_type *q_type, t_segment_info *seg_info)
+{
+	char			*part;
+	char			*temp;
+	int				part_start;
+	t_quote_type	current_quote;
+
+	current_quote = QUOTE_NONE;
+	if (result)
+		part_start = ft_strlen(result);
+	else
+		part_start = 0;
+	part = extract_and_add_segment(input, seg_info, part_start, &current_quote);
+	if (!part)
+		return (NULL);
+	if (*q_type == QUOTE_NONE)
+		*q_type = current_quote;
+	temp = ft_strjoin(result, part);
+	free(part);
+	if (!temp)
+	{
+		free(result);
+		return (NULL);
+	}
 	return (temp);
 }

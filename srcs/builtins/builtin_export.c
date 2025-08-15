@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:44:12 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 04:09:43 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:57:59 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static int	export_variable(const char *arg)
 	char	*value;
 	int		result;
 
+	name = NULL;
+	value = NULL;
 	if (parse_export_argument(arg, &name, &value) == EXECUTION_FAILURE)
 	{
 		free(name);

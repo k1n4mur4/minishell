@@ -34,4 +34,7 @@ char	*append_var_value(char *result, char *var_value);
 char	*handle_special_variable(char *str, int *i);
 char	*allocate_var_name(char *str, int start, int len);
 
+/* Segment expansion functions - expander_segments.c */
+char	*expand_word_with_segments(t_word_desc *word_desc);
+
 #endif

@@ -24,6 +24,8 @@ void	free_word_list(t_word_list *list)
 		{
 			if (temp->word->word)
 				free(temp->word->word);
+			if (temp->word->segments)
+				free(temp->word->segments);
 			free(temp->word);
 		}
 		free(temp);

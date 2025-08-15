@@ -60,6 +60,7 @@ static int	process_heredoc_line(char *line, char *delimiter)
 static int	write_heredoc_content(int fd, char *delimiter)
 {
 	char	*line;
+	int		interrupted;
 
 	setup_heredoc_signals();
 	while (1)
@@ -71,8 +72,9 @@ static int	write_heredoc_content(int fd, char *delimiter)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	interrupted = (g_interrupt_state == SIGINT);
 	setup_signals();
-	if (g_interrupt_state == SIGINT)
+	if (interrupted)
 	{
 		g_interrupt_state = 0;
 		return (EXECUTION_FAILURE);
