@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:41:07 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/15 03:40:14 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/15 18:54:02 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ static int	is_numeric(const char *str)
 int	builtin_exit_helper(t_word_list *args, int argc)
 {
 	if (argc == 1)
-	{
-		exit_value(EXECUTION_SUCCESS, SET);
 		return (EXIT_SUCCESS);
-	}
 	else if (argc > 2)
 	{
 		ft_dprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
@@ -50,7 +47,7 @@ int	builtin_exit_helper(t_word_list *args, int argc)
 			ft_dprintf(STDERR_FILENO, EXIT_ERR, "");
 		else
 			ft_dprintf(STDERR_FILENO, EXIT_ERR, args->next->word->word);
-		return (EXIT_FAILURE);
+		return (2);
 	}
 	exit_value(ft_atoi(args->next->word->word) % 256, SET);
 	return (EXIT_SUCCESS);
