@@ -6,7 +6,7 @@
 /*   By: kinamura <kinamura@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 05:42:19 by kinamura          #+#    #+#             */
-/*   Updated: 2025/08/11 04:09:14 by kinamura         ###   ########.fr       */
+/*   Updated: 2025/08/15 17:57:12 by kinamura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ int	builtin_cd(t_word_list *args)
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(target_dir) != 0)
 	{
-		perror("minishell: cd");
+		ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n",
+			target_dir, strerror(errno));
 		free(old_pwd);
 		return (EXECUTION_FAILURE);
 	}

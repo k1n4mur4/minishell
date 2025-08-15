@@ -20,6 +20,8 @@
 # include "libft.h"
 # include "eval.h"
 # include <unistd.h>
+# include <errno.h>
+# include <string.h>
 # include "exit_value.h"
 
 # define EXIT_ERR "minishell: exit: %s: numeric argument required\n"
